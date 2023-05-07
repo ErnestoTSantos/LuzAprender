@@ -1,0 +1,44 @@
+version: "3.7"
+services:
+
+  db:
+    image: postgres:10.1-alpine
+    ports:
+      - 5432:5432
+  
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file: .env
+    volumes:
+      - .:/app
+    ports:
+      - "${DJANGO_BIND_PORT}:${DJANGO_BIND_PORT}"
+    depends_on:
+      - db
+    command:
+      [
+        "./scripts/init.sh"
+      ]
+
+
+  integration-tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file: .env
+    working_dir: /app
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    command:
+      [
+        "${DB_HOST}:${DB_PORT}",
+        "-t",
+        "120",
+        "--",
+        "./scripts/start-tests.sh"
+      ]
+

@@ -1,0 +1,16 @@
+__pycache__/
+
+
+.coverage
+.coverage.*
+coverage.xml
+
+.venv
+env/
+venv/
+
+.vscode
+
+.mypy_cache/
+
+.devcontainer
