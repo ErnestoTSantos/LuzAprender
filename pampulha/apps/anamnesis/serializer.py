@@ -1,7 +1,12 @@
 import re
 from typing import Optional
 
-from rest_framework.serializers import ChoiceField, ModelSerializer, ValidationError
+from rest_framework.serializers import (
+    ChoiceField,
+    JSONField,
+    ModelSerializer,
+    ValidationError,
+)
 
 from pampulha.apps.anamnesis.models import AnamnesisModels, MonitoringSheetModels
 from pampulha.apps.anamnesis.utils import Verification
@@ -113,6 +118,15 @@ class CreateMonitoringSheetSerializer(ModelSerializer):
         return data
 
 
+class AnamnesisSerializer(ModelSerializer):
+    class Meta:
+        model = AnamnesisModels
+        exclude = (
+            "created_at",
+            "updated_at",
+        )
+
+
 class CreateAnamnesisSerializer(ModelSerializer):
     class Meta:
         model = AnamnesisModels
@@ -143,3 +157,39 @@ class CreateAnamnesisSerializer(ModelSerializer):
             return phone_number
 
         return f"55{phone_number}"
+
+    def validate_age(self, age: int) -> int:
+        if age < 0:
+            raise ValidationError("Age cannot be less than 0.")
+
+        return age
+
+    def validate_father(self, father: str) -> str:
+        if " " not in father:
+            raise ValidationError("Father name must have a last name.")
+
+        if len(father) < 7:
+            raise ValidationError("The father name is too short.")
+
+        return father
+
+    def validate_mother(self, mother: str) -> str:
+        if " " not in mother:
+            raise ValidationError("Mother name must have a last name.")
+
+        if len(mother) < 7:
+            raise ValidationError("The mother name is too short.")
+
+        return mother
+
+    def validate_father_age(self, father_age: int) -> int:
+        if father_age < 0:
+            raise ValidationError("Father age cannot be less than 0.")
+
+        return father_age
+
+    def validate_mother_age(self, mother_age: int) -> int:
+        if mother_age < 0:
+            raise ValidationError("Mother age cannot be less than 0.")
+
+        return mother_age

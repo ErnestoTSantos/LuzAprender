@@ -7,14 +7,94 @@ from rest_framework.status import HTTP_201_CREATED, HTTP_501_NOT_IMPLEMENTED
 from pampulha.apps.anamnesis.exceptions import MonitoringSheetException
 from pampulha.apps.anamnesis.models import AnamnesisModels, MonitoringSheetModels
 from pampulha.apps.anamnesis.serializer import (
+    AnamnesisSerializer,
     CreateAnamnesisSerializer,
     CreateMonitoringSheetSerializer,
     MonitoringSheetSerializer,
 )
 
 
+class AnamnesisModelViewset(viewsets.ModelViewSet):
+    queryset = AnamnesisModels.objects.all().order_by("-created_at")
+
+    SERIALIZER_ACTION = {
+        "create": CreateAnamnesisSerializer,
+        "list": AnamnesisSerializer,
+        "retrive": AnamnesisSerializer,
+        "partial_update": AnamnesisSerializer,
+        "update": ...,
+        "destroy": ...,
+    }
+
+    def get_serializer_class(self):
+
+        action = self.action
+
+        return self.SERIALIZER_ACTION[action]
+
+    def _create_anamnesis(self, request, *args, **kwargs):
+        logging.info("Creating a new anamnesis...")
+
+        logging.info("Starting serializer data...")
+        serializer_class = self.get_serializer_class()
+        serializer = serializer_class(data=request.data)
+
+        if not serializer.is_valid():
+            logging.warning("Something happened in validation... %s", serializer.errors)
+            raise MonitoringSheetException(serializer.errors)
+
+        self.perform_create(serializer=serializer)
+
+        return Response(status=HTTP_201_CREATED)
+
+    def create(self, request, *args, **kwargs) -> Response:
+        """
+        Create new anamnesis.
+
+        #TODO escrever exemplo de payload para criação...
+
+        Exemple HTTP POST payload:
+        {
+
+        }
+        """
+        return self._create_anamnesis(request, *args, **kwargs)
+
+    def list(self, request, *args, **kwargs):
+        """
+        GET monitoring sheet informations.
+        """
+        return super().list(self.queryset, request, *args, **kwargs)
+
+    def retrieve(self, request, pk, *args, **kwargs):
+        """
+        GET data an especific monitoring sheet.
+        """
+        return super().retrieve(request, pk, *args, **kwargs)
+
+    def partial_update(self, request, pk, *args, **kwargs):
+        """
+        PUT data an specific monitoring sheet.
+        """
+        return super().partial_update(request, pk, *args, **kwargs)
+
+    def destroy(self, request, *args, **kwargs):
+        """
+        Method not implemented
+        """
+
+        return Response(HTTP_501_NOT_IMPLEMENTED)
+
+    def update(self, request, *args, **kwargs):
+        """
+        Method not implemented
+        """
+
+        return Response(HTTP_501_NOT_IMPLEMENTED)
+
+
 class MonitoringSheetModelViewset(viewsets.ModelViewSet):
-    queryset = MonitoringSheetModels.objects.order_by("-created_at").all()
+    queryset = MonitoringSheetModels.objects.all().order_by("-created_at")
 
     SERIALIZER_ACTION = {
         "create": CreateMonitoringSheetSerializer,
