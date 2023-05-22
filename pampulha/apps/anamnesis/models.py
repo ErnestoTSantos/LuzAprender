@@ -35,7 +35,7 @@ class MonitoringSheetModels(BaseFileModels):
     extra_information = models.TextField("Anotações", null=True, blank=True)
 
     def __str__(self):
-        return f"{self.id}"
+        return f"<Monitoring Sheet: {self.id}>"
 
     class Meta:
         verbose_name = "Monitoring Sheet"
@@ -204,6 +204,9 @@ class AnamnesisModels(BaseFileModels):
         "Expectativas em relação ao atendimento da educação infatil"
     )
     other_observations = models.TextField("Outras observações", null=True, blank=True)
+
+    def __str__(self):
+        return f"<Anamnesis: {self.id}>"
 
     class Meta:
         verbose_name = "Anamnesi"

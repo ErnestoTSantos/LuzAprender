@@ -18,7 +18,10 @@ from django.contrib import admin
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
-from pampulha.apps.anamnesis.views import MonitoringSheetModelViewset
+from pampulha.apps.anamnesis.views import (
+    AnamnesisModelViewset,
+    MonitoringSheetModelViewset,
+)
 from pampulha.apps.users.views import PsychologistViewset
 
 router_v1 = DefaultRouter(trailing_slash=False)
@@ -26,6 +29,8 @@ router_v1 = DefaultRouter(trailing_slash=False)
 router_v1.register(
     "monitoring-sheet", MonitoringSheetModelViewset, basename="MonitoringSeet"
 )
+router_v1.register("anamnesis", AnamnesisModelViewset, basename="Anamnesis")
+router_v1.register("psychologist", PsychologistViewset, basename="Psychologist")
 
 urlpatterns = [
     path("admin/", admin.site.urls),

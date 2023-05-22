@@ -1,12 +1,8 @@
+import datetime
 import re
 from typing import Optional
 
-from rest_framework.serializers import (
-    ChoiceField,
-    JSONField,
-    ModelSerializer,
-    ValidationError,
-)
+from rest_framework.serializers import ChoiceField, ModelSerializer, ValidationError
 
 from pampulha.apps.anamnesis.models import AnamnesisModels, MonitoringSheetModels
 from pampulha.apps.anamnesis.utils import Verification
@@ -126,6 +122,9 @@ class AnamnesisSerializer(ModelSerializer):
             "updated_at",
         )
 
+    def validate_birthday(self, birthday) -> datetime:
+        return datetime.datetime.strftime(birthday, "%d/%m/%Y")
+
 
 class CreateAnamnesisSerializer(ModelSerializer):
     class Meta:
@@ -140,6 +139,18 @@ class CreateAnamnesisSerializer(ModelSerializer):
             raise ValidationError("The name is too short.")
 
         return name
+
+    def validate_birthday(self, birthday) -> datetime.date:
+        if birthday >= datetime.date.today():
+            raise ValidationError("Birthday can't be in the future, not today.")
+
+        return birthday
+
+    def validate_age(self, age: int) -> int:
+        if age < 0:
+            raise ValidationError("Age must be greater than 0.")
+
+        return age
 
     def validate_phone_number(self, phone_number: str) -> str:
         verification_numbers = re.sub(r"[^0-9]", "", phone_number)

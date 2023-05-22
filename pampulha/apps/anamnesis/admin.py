@@ -1,4 +1,7 @@
+from typing import Any, List, Optional, Tuple, Union
+
 from django.contrib import admin
+from django.http.request import HttpRequest
 
 from pampulha.apps.anamnesis.models import AnamnesisModels, MonitoringSheetModels
 
@@ -10,6 +13,33 @@ class MonitoringSheetAdmin(admin.ModelAdmin):
     list_display = ["id", "name", "phone_number", "telephone_number", "sex"]
     list_filter = ["sex"]
 
+    def get_readonly_fields(
+        self, request: HttpRequest, obj: Any | None = ...
+    ) -> List[str] | Tuple[Any, ...]:
+        if obj:
+            return {
+                "id",
+                "name",
+                "birthday",
+                "address",
+                "phone_number",
+                "created_at",
+                "updated_at",
+                "neighborhood",
+                "cep",
+                "state",
+                "city",
+                "telephone_number",
+                "sex",
+                "recommendation",
+                "entry_date",
+                "specialist_monitoring",
+                "head_teacher",
+                "extra_information",
+            }
+        else:
+            return {"id"}
+
 
 @admin.register(AnamnesisModels)
 class AnamnesisAdmin(admin.ModelAdmin):
@@ -18,7 +48,7 @@ class AnamnesisAdmin(admin.ModelAdmin):
     fieldsets = (
         (
             "Indentificação",
-            {"fields": ("name", "birthday", "age", "address", "phone_number")},
+            {"fields": ("id", "name", "birthday", "age", "address", "phone_number")},
         ),
         (
             "Informações do pai",
@@ -188,3 +218,100 @@ class AnamnesisAdmin(admin.ModelAdmin):
             },
         ),
     )
+
+    def get_readonly_fields(
+        self, request: HttpRequest, obj: Any | None = ...
+    ) -> List[str] | Tuple[Any, ...]:
+        if obj:
+            return {
+                "id",
+                "name",
+                "birthday",
+                "age",
+                "address",
+                "phone_number",
+                "father",
+                "father_age",
+                "father_schooling",
+                "father_profession",
+                "mother",
+                "mother_age",
+                "mother_schooling",
+                "mother_profession",
+                "brothers_name",
+                "brothers_age",
+                "brothers_schooling",
+                "brothers_profession",
+                "birth_postion",
+                "family_complaint",
+                "pregnancy_history",
+                "prenatal_care",
+                "where_was",
+                "type_of_delivery",
+                "on_the_expected_date",
+                "complications",
+                "color",
+                "weight",
+                "measure",
+                "needed_hospitalize",
+                "how_much_time",
+                "reason",
+                "medication",
+                "performed_surgery",
+                "First_contact_with_chest",
+                "sucking_swallowing_difficulties",
+                "when_stop_breastfeeding",
+                "used_bottle",
+                "used_acifier",
+                "start_solid_food",
+                "reactions",
+                "had_eating_difficulties",
+                "current_power",
+                "shared_bed",
+                "sleep",
+                "wake_up",
+                "sleeping_rituals",
+                "currently_sleep",
+                "first_speech",
+                "accompanied",
+                "currently_speak",
+                "language_disorders",
+                "other_media",
+                "sat",
+                "crawled",
+                "start_walk",
+                "fence_walker",
+                "tendency_fall",
+                "accidents",
+                "swings_other_movements",
+                "father_presence_absence",
+                "mother_conduct",
+                "removal_diapers",
+                "nocturnal_enuresis",
+                "encomprese",
+                "who_play_with",
+                "how_play",
+                "favorite_toys_games",
+                "attitudes_towards_toys",
+                "start_drawing",
+                "conduct",
+                "curious",
+                "observer",
+                "happy",
+                "good_memory",
+                "aggressive",
+                "stubborn",
+                "make_friends",
+                "affective",
+                "withdrawn",
+                "dependent",
+                "changeable_mood",
+                "reaction_upset",
+                "relationship_father",
+                "relationship_mother",
+                "relationship_family_members",
+                "expectations_childhood_education",
+                "other_observations",
+            }
+        else:
+            return {"id"}
