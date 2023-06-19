@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -42,15 +43,11 @@ INSTALLED_APPS = [
     "pampulha.apps.commands",
     "pampulha.apps.management",
     "pampulha.apps.anamnesis",
+    "pampulha.apps.schedule",
+    # Rest Framework
+    "rest_framework",
+    "rest_framework_simplejwt",
 ]
-
-# REST FRAMEWORK
-# REST_FRAMEWORK = {
-#     "DEFAULT_PERMISSION_CLASSES": [],
-#     "DEFAULT_AUTHENTICATION_CLASSES": [
-#         "pampulha.apps.management.authentication.JWTAuthentication",
-#     ],
-# }
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -138,3 +135,24 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+REST_FRAMEWORK = {
+    "DATE_INPUT_FORMATS": ("%d/%m/%Y", "%Y-%m-%d", "%Y/%m/%d"),
+    "DATE_FORMAT": ("%d/%m/%Y"),
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
+    ),
+    "DEFAULT_PERMISSIONS_CLASSES": ("rest_framework.permissions.IsAuthenticated"),
+    "TEST_REQUEST_DEFAULT_FORMAT": "json",
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=180),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "BLACKLIST_AFTER_ROTATION": False,
+    "SIGNING_KEY": "6s7papab=^%@eo+j=9ckoq6xj-iapx*-trbk^nemueyvx^ynf%",
+    "AUTH_HEADER_TYPES": ("Bearer",),
+}
+
+REDIRECT_ROUTE_LOGGIN = "http://www.localhost:8080/user_loggin?token="

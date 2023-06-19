@@ -1,3 +1,4 @@
+import datetime
 import re
 from typing import Optional
 
@@ -113,6 +114,18 @@ class CreateMonitoringSheetSerializer(ModelSerializer):
         return data
 
 
+class AnamnesisSerializer(ModelSerializer):
+    class Meta:
+        model = AnamnesisModels
+        exclude = (
+            "created_at",
+            "updated_at",
+        )
+
+    def validate_birthday(self, birthday) -> datetime:
+        return datetime.datetime.strftime(birthday, "%d/%m/%Y")
+
+
 class CreateAnamnesisSerializer(ModelSerializer):
     class Meta:
         model = AnamnesisModels
@@ -126,6 +139,18 @@ class CreateAnamnesisSerializer(ModelSerializer):
             raise ValidationError("The name is too short.")
 
         return name
+
+    def validate_birthday(self, birthday) -> datetime.date:
+        if birthday >= datetime.date.today():
+            raise ValidationError("Birthday can't be in the future, not today.")
+
+        return birthday
+
+    def validate_age(self, age: int) -> int:
+        if age < 0:
+            raise ValidationError("Age must be greater than 0.")
+
+        return age
 
     def validate_phone_number(self, phone_number: str) -> str:
         verification_numbers = re.sub(r"[^0-9]", "", phone_number)
@@ -143,3 +168,39 @@ class CreateAnamnesisSerializer(ModelSerializer):
             return phone_number
 
         return f"55{phone_number}"
+
+    def validate_age(self, age: int) -> int:
+        if age < 0:
+            raise ValidationError("Age cannot be less than 0.")
+
+        return age
+
+    def validate_father(self, father: str) -> str:
+        if " " not in father:
+            raise ValidationError("Father name must have a last name.")
+
+        if len(father) < 7:
+            raise ValidationError("The father name is too short.")
+
+        return father
+
+    def validate_mother(self, mother: str) -> str:
+        if " " not in mother:
+            raise ValidationError("Mother name must have a last name.")
+
+        if len(mother) < 7:
+            raise ValidationError("The mother name is too short.")
+
+        return mother
+
+    def validate_father_age(self, father_age: int) -> int:
+        if father_age < 0:
+            raise ValidationError("Father age cannot be less than 0.")
+
+        return father_age
+
+    def validate_mother_age(self, mother_age: int) -> int:
+        if mother_age < 0:
+            raise ValidationError("Mother age cannot be less than 0.")
+
+        return mother_age
