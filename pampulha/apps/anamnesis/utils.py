@@ -7,6 +7,25 @@ import requests
 class Verification:
     @staticmethod
     def verificate_cep(cep: str) -> Union[Optional[tuple[bool]], tuple]:
+        """
+        Callback request payload:
+        {
+          "cep": "89010025",
+          "state": "SC",
+          "city": "Blumenau",
+          "neighborhood": "Centro",
+          "street": "Rua Doutor Luiz de Freitas Melro",
+          "service": "viacep",
+          "location": {
+            "type": "Point",
+            "coordinates": {
+              "longitude": "-49.0629788",
+              "latitude": "-26.9244749"
+            }
+          }
+        }
+        """
+
         logging.info("Initiating request to BrasilAPI")
 
         api_request = "https://brasilapi.com.br/"

@@ -7,7 +7,7 @@ from django.db import models
 class PsychologistModel(models.Model):
 
     id = models.UUIDField("User identification", default=uuid.uuid4, primary_key=True)
-    username = models.CharField("Username", max_length=255, null=False)
+    username = models.CharField("Username", max_length=255, null=False, unique=True)
     password = models.CharField("Password", max_length=255, null=False)
     created_at = models.DateField("Creation date", auto_now_add=True, editable=False)
     updated_at = models.DateField("Updated date", auto_now=True, editable=False)
