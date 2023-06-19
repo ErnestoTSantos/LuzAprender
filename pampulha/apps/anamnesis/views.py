@@ -1,6 +1,7 @@
 import logging
 
 from rest_framework import viewsets
+from rest_framework.permissions import BasePermission, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_501_NOT_IMPLEMENTED
 
@@ -14,8 +15,14 @@ from pampulha.apps.anamnesis.serializer import (
 )
 
 
+class PsychologistPermission(BasePermission):
+    def has_permission(self, request, view):
+        return True
+
+
 class AnamnesisModelViewset(viewsets.ModelViewSet):
     queryset = AnamnesisModels.objects.all().order_by("-created_at")
+    permission_classes = [IsAuthenticated or PsychologistPermission]
 
     SERIALIZER_ACTION = {
         "create": CreateAnamnesisSerializer,
@@ -50,8 +57,6 @@ class AnamnesisModelViewset(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs) -> Response:
         """
         Create new anamnesis.
-
-        #TODO escrever exemplo de payload para criação...
 
         Exemple HTTP POST payload:
         {
@@ -170,6 +175,7 @@ class AnamnesisModelViewset(viewsets.ModelViewSet):
 
 class MonitoringSheetModelViewset(viewsets.ModelViewSet):
     queryset = MonitoringSheetModels.objects.all().order_by("-created_at")
+    permission_classes = [IsAuthenticated or PsychologistPermission]
 
     SERIALIZER_ACTION = {
         "create": CreateMonitoringSheetSerializer,

@@ -17,7 +17,7 @@ class MonitoringSheetAdmin(admin.ModelAdmin):
         self, request: HttpRequest, obj: Any | None = ...
     ) -> List[str] | Tuple[Any, ...]:
         if obj:
-            return {
+            return [
                 "id",
                 "name",
                 "birthday",
@@ -36,9 +36,9 @@ class MonitoringSheetAdmin(admin.ModelAdmin):
                 "specialist_monitoring",
                 "head_teacher",
                 "extra_information",
-            }
+            ]
         else:
-            return {"id"}
+            return ["id"]
 
 
 @admin.register(AnamnesisModels)
@@ -223,7 +223,7 @@ class AnamnesisAdmin(admin.ModelAdmin):
         self, request: HttpRequest, obj: Any | None = ...
     ) -> List[str] | Tuple[Any, ...]:
         if obj:
-            return {
+            return [
                 "id",
                 "name",
                 "birthday",
@@ -312,6 +312,6 @@ class AnamnesisAdmin(admin.ModelAdmin):
                 "relationship_family_members",
                 "expectations_childhood_education",
                 "other_observations",
-            }
+            ]
         else:
-            return {"id"}
+            return ["id"]
