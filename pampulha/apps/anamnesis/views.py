@@ -23,6 +23,7 @@ class PsychologistPermission(BasePermission):
 class AnamnesisModelViewset(viewsets.ModelViewSet):
     queryset = AnamnesisModels.objects.all().order_by("-created_at")
     permission_classes = [IsAuthenticated or PsychologistPermission]
+    http_method_names = ["get", "post", "patch", "options"]
 
     SERIALIZER_ACTION = {
         "create": CreateAnamnesisSerializer,
@@ -158,24 +159,12 @@ class AnamnesisModelViewset(viewsets.ModelViewSet):
         """
         return super().partial_update(request, pk, *args, **kwargs)
 
-    def destroy(self, request, *args, **kwargs):
-        """
-        Method not implemented
-        """
-
-        return Response(HTTP_501_NOT_IMPLEMENTED)
-
-    def update(self, request, *args, **kwargs):
-        """
-        Method not implemented
-        """
-
-        return Response(HTTP_501_NOT_IMPLEMENTED)
 
 
 class MonitoringSheetModelViewset(viewsets.ModelViewSet):
     queryset = MonitoringSheetModels.objects.all().order_by("-created_at")
     permission_classes = [IsAuthenticated or PsychologistPermission]
+    http_method_names = ["get", "post", "patch", "options"]
 
     SERIALIZER_ACTION = {
         "create": CreateMonitoringSheetSerializer,
@@ -246,17 +235,3 @@ class MonitoringSheetModelViewset(viewsets.ModelViewSet):
         PUT data an specific monitoring sheet.
         """
         return super().partial_update(request, pk, *args, **kwargs)
-
-    def destroy(self, request, *args, **kwargs):
-        """
-        Method not implemented
-        """
-
-        return Response(HTTP_501_NOT_IMPLEMENTED)
-
-    def update(self, request, *args, **kwargs):
-        """
-        Method not implemented
-        """
-
-        return Response(HTTP_501_NOT_IMPLEMENTED)

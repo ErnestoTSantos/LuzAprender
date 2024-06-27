@@ -10,8 +10,8 @@ admin.site.site_header = "Luz Aprender"
 
 @admin.register(MonitoringSheetModels)
 class MonitoringSheetAdmin(admin.ModelAdmin):
-    list_display = ["id", "name", "phone_number", "telephone_number", "sex"]
-    list_filter = ["sex"]
+    list_display = ["id", "name", "phone_number", "telephone_number", "gender"]
+    list_filter = ["gender"]
 
     def get_readonly_fields(
         self, request: HttpRequest, obj: Any | None = ...
@@ -30,7 +30,7 @@ class MonitoringSheetAdmin(admin.ModelAdmin):
                 "state",
                 "city",
                 "telephone_number",
-                "sex",
+                "gender",
                 "recommendation",
                 "entry_date",
                 "specialist_monitoring",
