@@ -25,7 +25,7 @@ from pampulha.apps.anamnesis.views import (
 from pampulha.apps.management.views import (
     AuthenticationVerifyView,
     AuthenticationView,
-    loggin_as,
+    loggin,
 )
 
 router_v1 = DefaultRouter(trailing_slash=False)
@@ -42,5 +42,5 @@ urlpatterns = [
     path(
         "api/v1/token/verify/", AuthenticationVerifyView.as_view(), name="obtain_token"
     ),
-    path("api/v1/loggin", loggin_as, name="loggin_as"),
+    path("api/v1/loggin", loggin, name="loggin_as"),
 ]

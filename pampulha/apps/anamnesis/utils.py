@@ -38,9 +38,9 @@ class Verification:
         cep_informations = request_api.json()
 
         return (
-            cep_informations["cep"],
-            cep_informations["state"],
-            cep_informations["city"],
-            cep_informations["neighborhood"],
-            cep_informations["street"],
+            cep_informations.get("cep"),
+            cep_informations.get("state"),
+            cep_informations.get("city"),
+            cep_informations.get("neighborhood"),
+            cep_informations.get("street"),
         )

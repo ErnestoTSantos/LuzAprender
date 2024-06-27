@@ -13,9 +13,9 @@ from pampulha.apps.management.authentication import authenticate_user
 
 class AuthenticationSerializer(TokenObtainSerializer):
     @classmethod
-    def get_token(cls, informations: Dict) -> AccessToken:
+    def get_token(cls, information: Dict) -> AccessToken:
         token = AccessToken()
-        token["user_informations"] = informations
+        token["user_information"] = information
         return token
 
     def validate(self, attrs: Dict) -> Dict:

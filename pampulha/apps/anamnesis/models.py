@@ -14,7 +14,9 @@ class BaseFileModels(models.Model):
 
 
 class MonitoringSheetModels(BaseFileModels):
-    SEX = (("Male", "Masculino"), ("Female", "Feminino"))
+    class GenderChoices(models.TextChoices):
+        MALE = "Male", "Masculino"
+        FEMALE = "Female", "Feminino"
 
     neighborhood = models.CharField("Bairro", max_length=255)
     cep = models.CharField("CEP", max_length=10)
@@ -23,7 +25,7 @@ class MonitoringSheetModels(BaseFileModels):
     telephone_number = models.CharField(
         "Telefone", max_length=10, null=True, blank=True
     )
-    sex = models.CharField("Sexo", choices=SEX, max_length=6)
+    gender = models.CharField("Sexo", choices=GenderChoices.choices, max_length=6)
     recommendation = models.BooleanField("Recomendação", default=False)
     entry_date = models.DateField("Data de entrada")
     specialist_monitoring = models.CharField(
@@ -43,10 +45,7 @@ class MonitoringSheetModels(BaseFileModels):
 
 
 class AnamnesisModels(BaseFileModels):
-    # Identification data
     age = models.IntegerField("Idade")
-
-    # Father informations
     father = models.CharField("Pai", max_length=255, null=True, blank=True)
     father_age = models.IntegerField("Idade", null=True, blank=True)
     father_schooling = models.CharField(
@@ -55,8 +54,6 @@ class AnamnesisModels(BaseFileModels):
     father_profession = models.CharField(
         "Profissão", max_length=255, null=True, blank=True
     )
-
-    # Mother informations
     mother = models.CharField("Mãe", max_length=255, null=True, blank=True)
     mother_age = models.IntegerField("Idade", null=True, blank=True)
     mother_schooling = models.CharField(
@@ -65,8 +62,6 @@ class AnamnesisModels(BaseFileModels):
     mother_profession = models.CharField(
         "Profissão", max_length=255, null=True, blank=True
     )
-
-    # Brothers informations
     brothers_name = models.JSONField(
         "Nome dos irmãos", default=dict, null=True, blank=True
     )
@@ -85,8 +80,6 @@ class AnamnesisModels(BaseFileModels):
         null=True,
         blank=True,
     )
-
-    # Pregnancy information
     family_complaint = models.TextField("Queixa familiar")
     pregnancy_history = models.TextField("Como aconteceu")
     prenatal_care = models.TextField("Acompanhamento pré natal")
@@ -94,8 +87,6 @@ class AnamnesisModels(BaseFileModels):
     type_of_delivery = models.CharField("Tipo de parto", max_length=255)
     on_the_expected_date = models.BooleanField("Na data esperada", default=True)
     complications = models.CharField("Complicações", max_length=255)
-
-    # Conditions of the newborn
     color = models.CharField("Cor do nascimento", max_length=255)
     weight = models.FloatField("Peso")
     measure = models.FloatField("Medida")
@@ -108,9 +99,7 @@ class AnamnesisModels(BaseFileModels):
     performed_surgery = models.CharField(
         "Cirurgia necessária", max_length=200, null=True, blank=True
     )
-
-    # Nursing
-    First_contact_with_chest = models.CharField(
+    first_contact_with_chest = models.CharField(
         "Primeiro contato com o peito", max_length=50
     )
     sucking_swallowing_difficulties = models.BooleanField(
@@ -121,23 +110,17 @@ class AnamnesisModels(BaseFileModels):
     )
     used_bottle = models.BooleanField("Usou mamadeira", default=True)
     used_acifier = models.BooleanField("Usou chupeta", default=True)
-
-    # Food
     start_solid_food = models.CharField("Incio da alimentação sólida", max_length=50)
     reactions = models.TextField("Reações")
     had_eating_difficulties = models.CharField(
         "Dificuldades para alimentar", max_length=200
     )
     current_power = models.CharField("Como se alimenta atualmente", max_length=200)
-
-    # Sleep
     shared_bed = models.BooleanField("Compartilha leito", default=True)
     sleep = models.CharField("Como dormia", max_length=200)
     wake_up = models.CharField("Como acordava", max_length=200)
     sleeping_rituals = models.CharField("Rituais para dormir", max_length=255)
     currently_sleep = models.CharField("Como dorme atualmente", max_length=255)
-
-    # Language
     first_speech = models.CharField(
         "Quando pronunciou a primeira palavra", max_length=255
     )
@@ -147,8 +130,6 @@ class AnamnesisModels(BaseFileModels):
         "Outras maneiras de comunicar", max_length=255
     )
     other_media = models.TextField("Outros meios de comunicação", null=True, blank=True)
-
-    # Motricity
     sat = models.CharField("Quando sentou", max_length=50)
     crawled = models.CharField("Como e quando engatinhou", max_length=255)
     start_walk = models.CharField("Quando e como começou a caminhar", max_length=255)
@@ -162,13 +143,9 @@ class AnamnesisModels(BaseFileModels):
         "Presença ou ausência do pai nesse período", max_length=255
     )
     mother_conduct = models.CharField("Conduta da mãe", max_length=255)
-
-    # Sphinterial Control
     removal_diapers = models.CharField("Como foi a retirada de fraldas", max_length=255)
     nocturnal_enuresis = models.CharField("Tem enurese noturna", max_length=255)
     encomprese = models.CharField("Encomprese", max_length=255)
-
-    # Playful Biography
     who_play_with = models.CharField("Com quem brinca", max_length=255)
     how_play = models.CharField("Como brinca", max_length=255)
     favorite_toys_games = models.CharField(
@@ -179,8 +156,6 @@ class AnamnesisModels(BaseFileModels):
     )
     start_drawing = models.CharField("Quando começou a desenhar", max_length=255)
     conduct = models.CharField("Conduta", max_length=255)
-
-    # Personal characteristics
     curious = models.BooleanField("Curioso/a")
     observer = models.BooleanField("Observador/a")
     happy = models.BooleanField("Alegre")

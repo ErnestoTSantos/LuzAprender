@@ -30,7 +30,7 @@ class AuthenticationVerifyView(TokenViewBase):
 @api_view(["POST"])
 @authentication_classes([TokenAuthentication])
 @authentication_classes([IsAuthenticated])
-def loggin_as(request: Request):
+def loggin(request: Request):
     """
     Route to user loggin
     """
