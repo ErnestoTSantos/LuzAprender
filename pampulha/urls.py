@@ -22,25 +22,18 @@ from pampulha.apps.anamnesis.views import (
     AnamnesisModelViewset,
     MonitoringSheetModelViewset,
 )
-from pampulha.apps.management.views import (
-    AuthenticationVerifyView,
-    AuthenticationView,
-    loggin,
-)
+from pampulha.apps.users.views import PsychologistViewset
 
-router_v1 = DefaultRouter(trailing_slash=False)
+router_v1 = DefaultRouter()
 router_v1.register(
     "monitoring-sheet", MonitoringSheetModelViewset, basename="MonitoringSeet"
 )
 router_v1.register("anamnesis", AnamnesisModelViewset, basename="Anamnesis")
+router_v1.register("psychologist", PsychologistViewset, basename="Psychologist")
+login = PsychologistViewset.as_view({"post": "login"})
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/v1/", include(router_v1.urls)),
-    # Token
-    path("api/v1/token/", AuthenticationView.as_view(), name="obtain_token"),
-    path(
-        "api/v1/token/verify/", AuthenticationVerifyView.as_view(), name="obtain_token"
-    ),
-    path("api/v1/loggin", loggin, name="loggin_as"),
+    path("api/v1/login/", login),
 ]

@@ -15,8 +15,8 @@ class BaseFileModels(models.Model):
 
 class MonitoringSheetModels(BaseFileModels):
     class GenderChoices(models.TextChoices):
-        MALE = "Male", "Masculino"
-        FEMALE = "Female", "Feminino"
+        MALE = "male", "Masculino"
+        FEMALE = "female", "Feminino"
 
     neighborhood = models.CharField("Bairro", max_length=255)
     cep = models.CharField("CEP", max_length=10)
@@ -181,7 +181,7 @@ class AnamnesisModels(BaseFileModels):
     other_observations = models.TextField("Outras observações", null=True, blank=True)
 
     def __str__(self):
-        return f"<Anamnesis: {self.id}>"
+        return f"Anamnesis: {self.id}"
 
     class Meta:
         verbose_name = "Anamnesi"

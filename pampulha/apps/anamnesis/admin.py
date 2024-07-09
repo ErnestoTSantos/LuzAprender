@@ -117,7 +117,7 @@ class AnamnesisAdmin(admin.ModelAdmin):
             "Cuidados iniciais",
             {
                 "fields": (
-                    "First_contact_with_chest",
+                    "first_contact_with_chest",
                     "sucking_swallowing_difficulties",
                     "when_stop_breastfeeding",
                     "used_bottle",
@@ -218,6 +218,20 @@ class AnamnesisAdmin(admin.ModelAdmin):
             },
         ),
     )
+
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        extra_context = extra_context or {}
+        extra_context.update(
+            {
+                "show_save_and_continue": False,
+                "show_save_and_add_another": False,
+                "show_save": False,
+                "show_delete": False,
+            }
+        )
+        return super().change_view(
+            request, object_id, form_url, extra_context=extra_context,
+        )
 
     def get_readonly_fields(
         self, request: HttpRequest, obj: Any | None = ...

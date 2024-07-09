@@ -2,7 +2,7 @@ import datetime
 import re
 from typing import Optional
 
-from rest_framework.serializers import ChoiceField, ModelSerializer, ValidationError
+from rest_framework.serializers import ChoiceField, ModelSerializer, ValidationError, CharField
 
 from pampulha.apps.anamnesis.models import AnamnesisModels, MonitoringSheetModels
 from pampulha.apps.anamnesis.utils import Verification
@@ -32,9 +32,11 @@ class MonitoringSheetSerializer(ModelSerializer):
 
 
 class CreateMonitoringSheetSerializer(ModelSerializer):
-    SEX = (("Masculino"), ("Feminino"))
-
-    sex = ChoiceField(required=True, choices=SEX)
+    address = CharField(required=False)
+    neighborhood = CharField(required=False)
+    state = CharField(required=False)
+    city = CharField(required=False)
+    gender = ChoiceField(required=True, choices=MonitoringSheetModels.GenderChoices.choices)
 
     class Meta:
         model = MonitoringSheetModels
@@ -91,7 +93,6 @@ class CreateMonitoringSheetSerializer(ModelSerializer):
 
     def validate(self, data: dict) -> dict:
         cep = data.get("cep", "")
-
         (
             validate_cep,
             validate_state,

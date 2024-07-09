@@ -22,7 +22,6 @@ class PsychologistPermission(BasePermission):
 
 class AnamnesisModelViewset(viewsets.ModelViewSet):
     queryset = AnamnesisModels.objects.all().order_by("-created_at")
-    permission_classes = [IsAuthenticated or PsychologistPermission]
     http_method_names = ["get", "post", "patch", "options"]
 
     SERIALIZER_ACTION = {
@@ -42,8 +41,6 @@ class AnamnesisModelViewset(viewsets.ModelViewSet):
 
     def _create_anamnesis(self, request, *args, **kwargs):
         logging.info("Creating a new anamnesis...")
-
-        logging.info("Starting serializer data...")
         serializer_class = self.get_serializer_class()
         serializer = serializer_class(data=request.data)
 
@@ -163,8 +160,7 @@ class AnamnesisModelViewset(viewsets.ModelViewSet):
 
 class MonitoringSheetModelViewset(viewsets.ModelViewSet):
     queryset = MonitoringSheetModels.objects.all().order_by("-created_at")
-    permission_classes = [IsAuthenticated or PsychologistPermission]
-    http_method_names = ["get", "post", "patch", "options"]
+    http_method_names = ["get", "retrieve", "post", "patch", "options"]
 
     SERIALIZER_ACTION = {
         "create": CreateMonitoringSheetSerializer,
@@ -232,6 +228,6 @@ class MonitoringSheetModelViewset(viewsets.ModelViewSet):
 
     def partial_update(self, request, pk, *args, **kwargs):
         """
-        PUT data an specific monitoring sheet.
+        PATCH data an specific monitoring sheet.
         """
         return super().partial_update(request, pk, *args, **kwargs)

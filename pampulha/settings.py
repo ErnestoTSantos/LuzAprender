@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from datetime import timedelta
 from pathlib import Path
+from corsheaders.defaults import default_headers
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -42,7 +43,6 @@ INSTALLED_APPS = [
     # My apps
     "pampulha.apps.users",
     "pampulha.apps.commands",
-    "pampulha.apps.management",
     "pampulha.apps.anamnesis",
     "pampulha.apps.schedule",
     # Rest Framework
@@ -94,6 +94,9 @@ DATABASES = {
         "PORT": os.getenv("DB_PORT"),
     }
 }
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_HEADERS = default_headers + ()
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
